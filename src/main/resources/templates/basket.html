@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+
+<body>
+    <div class="container vertical-center">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h1>Products</h1>
+                    </div>
+                    <form action="#" th:action="@{/{id}(id=${basketFormBean.id})}" method="post" th:object="${basketFormBean}">
+                        <input type="hidden" id="id" name="id" th:field="*{id}" th:value="*{id}"/>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Product</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h4>Quantity</h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <h4>Add</h4>
+                                </div>
+                            </div>
+                            <div class="row" th:each="product, productStat : *{productFormBeans}">
+                                <div class="col-md-6">
+                                    <input type="hidden" id="id" name="id" th:field="*{productFormBeans[__${productStat.index}__].description}" th:value="*{productFormBeans[__${productStat.index}__].description}"/>
+                                    <h4 th:text="*{productFormBeans[__${productStat.index}__].description}"></h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <input id="id" name="id" th:field="*{productFormBeans[__${productStat.index}__].quantity}" th:value="*{productFormBeans[__${productStat.index}__].quantity}"/>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-success btn-sm" type="submit"
+                                            data-toggle="tooltip" data-placement="right" title="Add new product"
+                                            name="addProduct" th:value="*{productFormBeans[__${productStat.index}__].id}">
+                                        <span class="glyphicon glyphicon-plus"></span> +
+                                    </button>
+                                </div>
+                                <input type="hidden" id="id" name="id" th:field="*{productFormBeans[__${productStat.index}__].id}" th:value="*{productFormBeans[__${productStat.index}__].id}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h1>Your basket</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h4>Product</h4>
+                            </div>
+                            <div class="col-md-4" style="text-align: right">
+                                Quantity @ Value
+                            </div>
+                            <div class="col-md-3" style="text-align: right">
+                                <h4>Item Total</h4>
+                            </div>
+                        </div>
+
+                        <div th:each="basketItem: ${basketFormBean.basket.basketItems}">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <span th:text="${basketItem.product.getBasketDescription()}"></span>
+                                </div>
+                                <div class="col-md-4" style="text-align: right">
+                                    <span th:text="${basketItem.quantity}"></span>
+                                    <span> @ </span>
+                                    <span th:text="${basketItem.product.value}"></span>
+                                </div>
+                                <div class="col-md-3" style="text-align: right">
+                                    <span th:text="${basketItem.subTotal}"></span>
+                                </div>
+                            </div>
+                            <div th:each="discount: ${basketItem.discounts}">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <span th:text="${discount.description}"></span>
+                                    </div>
+                                    <div class="col-md-3" style="text-align: right">
+                                    </div>
+                                    <div class="col-md-3" style="text-align: right">
+                                        <span th:text="${discount.value}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="border-top: 1px solid">
+                            <div class="col-md-5">
+                                <h4>Total Price: </h4>
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                            <div class="col-md-3" style="text-align: right">
+                                <h4 th:text="${basketFormBean.basket.total}"></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-3">
+                <a class="btn btn-success btn-block"
+                   th:href="@{/}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Clear basket</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
